@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GenSync"
+rootProject.name = "GridSync"
 include(":app")
  
