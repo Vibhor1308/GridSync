@@ -1,4 +1,4 @@
-package com.example.gensync
+package com.example.GridSync
 
 import org.junit.Test
 

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.gensync"
+    namespace = "com.example.GridSync"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.gensync"
+        applicationId = "com.example.GridSync"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

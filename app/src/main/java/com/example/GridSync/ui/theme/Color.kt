@@ -1,4 +1,4 @@
-package com.example.gensync.ui.theme
+package com.example.GridSync.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
