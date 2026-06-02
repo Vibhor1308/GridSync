@@ -2,14 +2,12 @@ package com.example.GridSync.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -21,7 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import com.example.GridSync.R
 
 @Composable
 fun ModuleCard(
@@ -34,20 +33,20 @@ fun ModuleCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(105.dp),
-        shape = RoundedCornerShape(20.dp),
+            .height(dimensionResource(id = R.dimen.module_card_height)),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.card_corner_radius)),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = dimensionResource(id = R.dimen.card_elevation)
         )
     ) {
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -56,17 +55,17 @@ fun ModuleCard(
                 imageVector = icon,
                 contentDescription = null,
                 tint = iconColor,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size_small))
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
 
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_tiny)))
 
             Text(
                 text = subtitle,

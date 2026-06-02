@@ -28,8 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.GridSync.R
 import com.example.GridSync.presentation.navigation.AppRoutes
@@ -76,11 +76,11 @@ fun SplashScreen(
         Image(
             painter = painterResource(id = R.drawable.gs_logo),
             contentDescription = "GridSync Logo",
-            modifier = Modifier.size(120.dp)
+            modifier = Modifier.size(dimensionResource(id = R.dimen.logo_size_large))
         )
 
         Spacer(
-            modifier = Modifier.height(32.dp)
+            modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_xxlarge))
         )
 
         SplashItem(
@@ -105,7 +105,7 @@ fun SplashScreen(
             active = currentStep >= 3
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_xxlarge)))
 
         AnimatedVisibility(
             visible = currentStep >= 4
@@ -150,7 +150,7 @@ fun SplashItem(
             modifier = Modifier.alpha(alpha)
         )
 
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacing_medium)))
 
         Text(
             text = text,

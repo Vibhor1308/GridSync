@@ -26,8 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.example.GridSync.R
 import com.example.GridSync.presentation.components.ModuleCard
 import com.example.GridSync.ui.theme.DsmBlue
@@ -46,10 +46,10 @@ fun DashboardScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(16.dp)
+                .padding(dimensionResource(id = R.dimen.padding_medium))
         ) {
 
-            Spacer(modifier = Modifier.height(70.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_huge)))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -58,10 +58,10 @@ fun DashboardScreen() {
                 Image(
                     painter = painterResource(R.drawable.gs_logo),
                     contentDescription = null,
-                    modifier = Modifier.size(80.dp)
+                    modifier = Modifier.size(dimensionResource(id = R.dimen.logo_size_medium))
                 )
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacing_large)))
 
                 Column {
 
@@ -79,16 +79,16 @@ fun DashboardScreen() {
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(
-                    top = 8.dp,
-                    bottom = 16.dp
+                    top = dimensionResource(id = R.dimen.padding_small),
+                    bottom = dimensionResource(id = R.dimen.padding_medium)
                 ),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.spacing_medium)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.spacing_medium)),
             ) {
 
                 item {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">32dp</dimen>
+
+    <!-- Spacing -->
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+    <dimen name="spacing_xxlarge">32dp</dimen>
+    <dimen name="spacing_huge">70dp</dimen>
+
+    <!-- Logo & Icon Sizes -->
+    <dimen name="icon_size_small">32dp</dimen>
+    <dimen name="logo_size_medium">80dp</dimen>
+    <dimen name="logo_size_large">120dp</dimen>
+
+    <!-- Card Dimensions -->
+    <dimen name="module_card_height">105dp</dimen>
+    <dimen name="card_corner_radius">20dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+
+    <!-- Text Sizes (sp) -->
+    <dimen name="text_size_body">16sp</dimen>
+    <dimen name="text_size_title">22sp</dimen>
+    <dimen name="text_size_label">11sp</dimen>
+
+    <!-- Line Heights (sp) -->
+    <dimen name="line_height_body">24sp</dimen>
+    <dimen name="line_height_title">28sp</dimen>
+    <dimen name="line_height_label">16sp</dimen>
+
+    <!-- Letter Spacing (sp) -->
+    <dimen name="letter_spacing_body">0.5sp</dimen>
+    <dimen name="letter_spacing_title">0sp</dimen>
+    <dimen name="letter_spacing_label">0.5sp</dimen>
+</resources>
