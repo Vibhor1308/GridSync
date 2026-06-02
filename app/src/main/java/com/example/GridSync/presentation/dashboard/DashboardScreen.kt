@@ -45,7 +45,6 @@ fun DashboardScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .safeDrawingPadding()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp)
         ) {
@@ -68,12 +67,14 @@ fun DashboardScreen() {
 
                     Text(
                         text = "GridSync",
-                        style = MaterialTheme.typography.headlineSmall
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onBackground // Adapts to Light/Dark automatically
                     )
 
                     Text(
                         text = "Power Operations Suite",
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f) // Softer contrast for subtitle
                     )
                 }
             }
