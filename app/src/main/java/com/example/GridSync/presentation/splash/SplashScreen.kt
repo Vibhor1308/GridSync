@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.GridSync.R
 import com.example.GridSync.presentation.navigation.AppRoutes
@@ -75,7 +76,7 @@ fun SplashScreen(
 
         Image(
             painter = painterResource(id = R.drawable.gs_logo),
-            contentDescription = "GridSync Logo",
+            contentDescription = stringResource(id = R.string.splash_logo_content_description),
             modifier = Modifier.size(dimensionResource(id = R.dimen.logo_size_large))
         )
 
@@ -85,23 +86,23 @@ fun SplashScreen(
 
         SplashItem(
             icon = Icons.Default.Factory,
-            text = "Generation",
+            text = stringResource(id = R.string.splash_generation),
             active = currentStep >= 1
         )
 
-        Text("│")
+        Text(stringResource(id = R.string.splash_separator))
 
         SplashItem(
             icon = Icons.Default.CellTower,
-            text = "Transmission",
+            text = stringResource(id = R.string.splash_transmission),
             active = currentStep >= 2
         )
 
-        Text("│")
+        Text(stringResource(id = R.string.splash_separator))
 
         SplashItem(
             icon = Icons.Default.Power,
-            text = "Distribution",
+            text = stringResource(id = R.string.splash_distribution),
             active = currentStep >= 3
         )
 
@@ -116,12 +117,12 @@ fun SplashScreen(
             ) {
 
                 Text(
-                    text = "GridSync",
+                    text = stringResource(id = R.string.app_name),
                     style = MaterialTheme.typography.headlineMedium
                 )
 
                 Text(
-                    text = "Power Operations Suite"
+                    text = stringResource(id = R.string.power_operations_suite)
                 )
             }
         }

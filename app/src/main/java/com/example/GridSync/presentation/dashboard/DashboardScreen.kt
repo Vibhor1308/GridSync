@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.GridSync.R
 import com.example.GridSync.presentation.components.ModuleCard
 import com.example.GridSync.ui.theme.DsmBlue
@@ -66,13 +67,13 @@ fun DashboardScreen() {
                 Column {
 
                     Text(
-                        text = "GridSync",
+                        text = stringResource(id = R.string.app_name),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onBackground // Adapts to Light/Dark automatically
                     )
 
                     Text(
-                        text = "Power Operations Suite",
+                        text = stringResource(id = R.string.power_operations_suite),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f) // Softer contrast for subtitle
                     )
@@ -94,8 +95,8 @@ fun DashboardScreen() {
                 item {
                     ModuleCard(
                         icon = Icons.Default.ElectricalServices,
-                        title = "DSM",
-                        subtitle = "Deviation Settlement",
+                        title = stringResource(id = R.string.module_dsm_title),
+                        subtitle = stringResource(id = R.string.module_dsm_subtitle),
                         iconColor = DsmBlue
                     )
                 }
@@ -103,8 +104,8 @@ fun DashboardScreen() {
                 item {
                     ModuleCard(
                         icon = Icons.Default.Analytics,
-                        title = "RTDA",
-                        subtitle = "Real Time Analytics",
+                        title = stringResource(id = R.string.module_rtda_title),
+                        subtitle = stringResource(id = R.string.module_rtda_subtitle),
                         iconColor = RtdaGreen
                     )
                 }
@@ -112,8 +113,8 @@ fun DashboardScreen() {
                 item {
                     ModuleCard(
                         icon = Icons.Default.Assessment,
-                        title = "Reports",
-                        subtitle = "Operational Reports",
+                        title = stringResource(id = R.string.module_reports_title),
+                        subtitle = stringResource(id = R.string.module_reports_subtitle),
                         iconColor = ReportsPurple
                     )
                 }
@@ -121,8 +122,8 @@ fun DashboardScreen() {
                 item {
                     ModuleCard(
                         icon = Icons.Default.Extension,
-                        title = "Future",
-                        subtitle = "Upcoming Modules",
+                        title = stringResource(id = R.string.module_future_title),
+                        subtitle = stringResource(id = R.string.module_future_subtitle),
                         iconColor = FutureOrange
                     )
                 }
