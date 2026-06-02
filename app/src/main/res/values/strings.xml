@@ -1,3 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GridSync</string>
+    <string name="power_operations_suite">Power Operations Suite</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_generation">Generation</string>
+    <string name="splash_transmission">Transmission</string>
+    <string name="splash_distribution">Distribution</string>
+    <string name="splash_logo_content_description">GridSync Logo</string>
+    <string name="splash_separator">│</string>
+
+    <!-- Dashboard Screen -->
+    <string name="module_dsm_title">DSM</string>
+    <string name="module_dsm_subtitle">Deviation Settlement</string>
+    <string name="module_rtda_title">RTDA</string>
+    <string name="module_rtda_subtitle">Real Time Analytics</string>
+    <string name="module_reports_title">Reports</string>
+    <string name="module_reports_subtitle">Operational Reports</string>
+    <string name="module_future_title">Future</string>
+    <string name="module_future_subtitle">Upcoming Modules</string>
 </resources>
