@@ -27,10 +27,12 @@ fun ModuleCard(
     icon: ImageVector,
     title: String,
     subtitle: String,
-    iconColor: Color
+    iconColor: Color,
+    onClick: () -> Unit
 ) {
 
     Card(
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(dimensionResource(id = R.dimen.module_card_height)),

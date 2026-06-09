@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -37,7 +36,7 @@ import com.example.GridSync.ui.theme.ReportsPurple
 import com.example.GridSync.ui.theme.RtdaGreen
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(onDsmClick: () -> Unit) {
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -97,7 +96,8 @@ fun DashboardScreen() {
                         icon = Icons.Default.ElectricalServices,
                         title = stringResource(id = R.string.module_dsm_title),
                         subtitle = stringResource(id = R.string.module_dsm_subtitle),
-                        iconColor = DsmBlue
+                        iconColor = DsmBlue,
+                        onClick = onDsmClick
                     )
                 }
 
@@ -107,7 +107,9 @@ fun DashboardScreen() {
                         title = stringResource(id = R.string.module_rtda_title),
                         subtitle = stringResource(id = R.string.module_rtda_subtitle),
                         iconColor = RtdaGreen
-                    )
+                    ){
+
+                    }
                 }
 
                 item {
@@ -116,7 +118,9 @@ fun DashboardScreen() {
                         title = stringResource(id = R.string.module_reports_title),
                         subtitle = stringResource(id = R.string.module_reports_subtitle),
                         iconColor = ReportsPurple
-                    )
+                    ){
+
+                    }
                 }
 
                 item {
@@ -125,7 +129,9 @@ fun DashboardScreen() {
                         title = stringResource(id = R.string.module_future_title),
                         subtitle = stringResource(id = R.string.module_future_subtitle),
                         iconColor = FutureOrange
-                    )
+                    ){
+
+                    }
                 }
             }
         }

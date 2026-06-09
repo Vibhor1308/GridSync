@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.GridSync.presentation.dashboard.DashboardScreen
+import com.example.GridSync.presentation.dsm.DSMScreen
 import com.example.GridSync.presentation.splash.SplashScreen
 
 @Composable
@@ -22,7 +23,17 @@ fun AppNavigation() {
         }
 
         composable(AppRoutes.DASHBOARD) {
-            DashboardScreen()
+            DashboardScreen(
+                onDsmClick = {
+                    navController.navigate(
+                        AppRoutes.DSM
+                    )
+                }
+            )
+        }
+
+        composable(AppRoutes.DSM) {
+            DSMScreen()
         }
     }
 }
