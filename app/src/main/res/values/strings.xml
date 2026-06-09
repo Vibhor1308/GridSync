@@ -12,11 +12,22 @@
 
     <!-- Dashboard Screen -->
     <string name="module_dsm_title">DSM</string>
-    <string name="module_dsm_subtitle">Deviation Settlement</string>
+    <string name="module_dsm_subtitle">Deviation Settlement Mechanism</string>
     <string name="module_rtda_title">RTDA</string>
     <string name="module_rtda_subtitle">Real Time Analytics</string>
     <string name="module_reports_title">Reports</string>
     <string name="module_reports_subtitle">Operational Reports</string>
     <string name="module_future_title">Future</string>
     <string name="module_future_subtitle">Upcoming Modules</string>
+
+    <!-- DSM Screen -->
+    <string name="dsm_screen_title">DSM</string>
+    <string name="dsm_screen_subtitle">Deviation Settlement Mechanism</string>
+    <string name="dsm_select_type">Select DSM Type</string>
+    <string name="dsm_type_general_seller">General Seller DSM</string>
+    <string name="dsm_type_general_seller_desc">Conventional Generators</string>
+    <string name="dsm_type_wind">Wind DSM</string>
+    <string name="dsm_type_wind_desc">Wind Power Generators</string>
+    <string name="dsm_type_solar">Solar DSM</string>
+    <string name="dsm_type_solar_desc">Solar Power Generators</string>
 </resources>

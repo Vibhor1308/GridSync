@@ -1,17 +1,18 @@
-package com.example.GridSync.presentation.components
+package com.example.GridSync.presentation.dsm.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -20,26 +21,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.style.TextAlign
 import com.example.GridSync.R
 
 @Composable
-fun ModuleCard(
+fun DsmTypeCard(
     icon: ImageVector,
     title: String,
-    subtitle: String,
-    iconColor: Color,
+    description: String,
     onClick: () -> Unit
 ) {
 
     Card(
         onClick = onClick,
         modifier = Modifier
-            .fillMaxWidth()
-            .height(dimensionResource(id = R.dimen.module_card_height)),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(dimensionResource(id = R.dimen.card_corner_radius)),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -49,46 +46,57 @@ fun ModuleCard(
         )
     ) {
 
-        Column(
+        Row(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
             Box(
                 modifier = Modifier
                     .size(dimensionResource(id = R.dimen.icon_background_size))
                     .background(
-                        color = iconColor.copy(alpha = 0.1f),
-                        shape = CircleShape
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                        CircleShape
                     ),
                 contentAlignment = Alignment.Center
             ) {
+
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = iconColor,
-                    modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size_small))
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
-
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
+            Spacer(
+                modifier = Modifier.width(dimensionResource(id = R.dimen.spacing_large))
             )
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_tiny)))
+            Column {
 
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                textAlign = TextAlign.Center
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = 0.7f
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Icon(
+                imageVector = Icons.Default.ChevronRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                modifier = Modifier.size(dimensionResource(id = R.dimen.spacing_large))
             )
         }
     }
