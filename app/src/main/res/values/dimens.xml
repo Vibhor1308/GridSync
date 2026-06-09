@@ -13,6 +13,7 @@
     <dimen name="spacing_xlarge">24dp</dimen>
     <dimen name="spacing_xxlarge">32dp</dimen>
     <dimen name="spacing_huge">70dp</dimen>
+    <dimen name="spacing_dsm_top">50dp</dimen>
 
     <!-- Logo & Icon Sizes -->
     <dimen name="icon_size_small">32dp</dimen>

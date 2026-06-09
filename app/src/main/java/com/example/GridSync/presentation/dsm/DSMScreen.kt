@@ -2,18 +2,24 @@ package com.example.GridSync.presentation.dsm
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Air
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -22,6 +28,7 @@ import com.example.GridSync.presentation.dsm.components.DsmTypeCard
 
 @Composable
 fun DSMScreen(
+    onBackClick: () -> Unit = {},
     onGeneralSellerClick: () -> Unit = {},
     onWindClick: () -> Unit = {},
     onSolarClick: () -> Unit = {}
@@ -32,14 +39,15 @@ fun DSMScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
-            .padding(horizontal = dimensionResource(R.dimen.padding_large))
+            .padding(horizontal = dimensionResource(R.dimen.padding_large)),
+        horizontalAlignment = Alignment.Start
     ) {
 
         Spacer(
-            modifier = Modifier.height(dimensionResource(R.dimen.padding_medium))
+            modifier = Modifier.height(dimensionResource(R.dimen.spacing_dsm_top))
         )
 
-        DSMHeader()
+        DSMHeader(onBackClick = onBackClick)
 
         Spacer(
             modifier = Modifier.height(dimensionResource(R.dimen.padding_medium))
@@ -87,22 +95,38 @@ fun DSMScreen(
 }
 
 @Composable
-private fun DSMHeader() {
-
-    Column {
-
-        Text(
-            text = stringResource(id = R.string.dsm_screen_title),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-
-        Text(
-            text = stringResource(id = R.string.dsm_screen_subtitle),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground.copy(
-                alpha = 0.7f
+private fun DSMHeader(
+    onBackClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = onBackClick,
+            modifier = Modifier.padding(end = dimensionResource(id = R.dimen.padding_small))
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = MaterialTheme.colorScheme.onBackground
             )
-        )
+        }
+
+        Column {
+            Text(
+                text = stringResource(id = R.string.dsm_screen_title),
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Text(
+                text = stringResource(id = R.string.dsm_screen_subtitle),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground.copy(
+                    alpha = 0.7f
+                )
+            )
+        }
     }
 }

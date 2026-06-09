@@ -33,7 +33,11 @@ fun AppNavigation() {
         }
 
         composable(AppRoutes.DSM) {
-            DSMScreen()
+            DSMScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
