@@ -3,6 +3,7 @@
     <string name="app_name">GridSync</string>
     <string name="power_operations_suite">Power Operations Suite</string>
     <string name="common_back">Back</string>
+    <string name="common_upload_icon">Upload Icon</string>
 
     <!-- Splash Screen -->
     <string name="splash_generation">Generation</string>
@@ -36,11 +37,11 @@
     <string name="general_seller_dsm_title">General Seller DSM</string>
     <string name="general_seller_dsm_subtitle">Deviation Settlement Calculation</string>
     <string name="general_seller_dsm_step_1">Step 1 of 4</string>
-    <string name="general_seller_dsm_upload_title">Upload DSM Excel File</string>
+    <string name="general_seller_dsm_upload_title">Upload DSM Input File</string>
     <string name="general_seller_dsm_no_file">No file selected</string>
     <string name="general_seller_dsm_continue">Continue</string>
 
     <!-- Upload File Card -->
     <string name="upload_file_card_tap">Tap to Select Excel File</string>
-    <string name="upload_file_card_format">Supported Format: .xlsx</string>
+    <string name="upload_file_card_format">Supported Format: .xlsx, .csv</string>
 </resources>

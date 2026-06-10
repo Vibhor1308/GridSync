@@ -26,9 +26,9 @@ fun AppNavigation() {
         composable(AppRoutes.DASHBOARD) {
             DashboardScreen(
                 onDsmClick = {
-                    navController.navigate(
-                        AppRoutes.DSM
-                    )
+                    if (navController.currentDestination?.route == AppRoutes.DASHBOARD) {
+                        navController.navigate(AppRoutes.DSM)
+                    }
                 }
             )
         }
@@ -40,9 +40,9 @@ fun AppNavigation() {
                 },
 
                 onGeneralSellerClick = {
-                    navController.navigate(
-                        AppRoutes.GENERAL_SELLER_DSM
-                    )
+                    if (navController.currentDestination?.route == AppRoutes.DSM) {
+                        navController.navigate(AppRoutes.GENERAL_SELLER_DSM)
+                    }
                 },
 
                 onWindClick = {

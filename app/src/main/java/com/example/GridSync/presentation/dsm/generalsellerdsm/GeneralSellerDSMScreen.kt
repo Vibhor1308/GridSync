@@ -1,28 +1,76 @@
 package com.example.GridSync.presentation.dsm.generalsellerdsm
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.example.GridSync.R
-import com.example.GridSync.presentation.components.UploadFileCard
-import com.example.GridSync.presentation.dsm.generalsellerdsm.components.GeneralSellerDsmHeader
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.GridSync.R
+import com.example.GridSync.presentation.components.UploadFileCard
+import com.example.GridSync.presentation.dsm.common.DsmType
+import com.example.GridSync.presentation.dsm.common.DsmWorkflowViewModel
+import com.example.GridSync.presentation.dsm.generalsellerdsm.components.GeneralSellerDsmHeader
+import com.example.GridSync.utils.getFileName
 
 @Composable
 fun GeneralSellerDsmScreen(
     onBackClick: () -> Unit
 ) {
+
+    val viewModel: DsmWorkflowViewModel = viewModel()
+    val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+    val isInteractionEnabled = lifecycleState.isAtLeast(Lifecycle.State.RESUMED)
+
+    LaunchedEffect(Unit) {
+        viewModel.setDsmType(
+            DsmType.GENERAL_SELLER
+        )
+    }
+
+    val launcher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.OpenDocument()
+        ) { uri: Uri? ->
+
+            uri?.let {
+
+                val fileName =
+                    getFileName(
+                        context,
+                        it
+                    )
+
+                viewModel.onFileSelected(
+                    fileName,
+                    uri
+                )
+            }
+        }
 
     Column(
         modifier = Modifier
@@ -31,6 +79,7 @@ fun GeneralSellerDsmScreen(
                 MaterialTheme.colorScheme.background
             )
             .statusBarsPadding()
+            .navigationBarsPadding()
             .padding(horizontal = dimensionResource(R.dimen.padding_large))
     ) {
 
@@ -67,7 +116,19 @@ fun GeneralSellerDsmScreen(
         )
 
         UploadFileCard(
-            onClick = {}
+            enabled = isInteractionEnabled,
+            onClick = {
+                launcher.launch(
+                    arrayOf(
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "application/vnd.ms-excel",
+                        "text/csv",
+                        "text/comma-separated-values",
+                        "application/csv"
+                    )
+                )
+            }
+
         )
 
         Spacer(
@@ -75,9 +136,14 @@ fun GeneralSellerDsmScreen(
         )
 
         Text(
-            text = stringResource(id = R.string.general_seller_dsm_no_file),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+            text = uiState.selectedFileName
+                ?: stringResource(id = R.string.general_seller_dsm_no_file),
+            style = MaterialTheme.typography.bodyLarge,
+            color = if (uiState.isFileSelected)
+                MaterialTheme.colorScheme.primary
+            else
+                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+            fontWeight = if (uiState.isFileSelected) FontWeight.SemiBold else FontWeight.Normal
         )
 
         Spacer(
@@ -86,14 +152,17 @@ fun GeneralSellerDsmScreen(
 
         Button(
             onClick = {},
-            enabled = false,
+            enabled = uiState.isFileSelected && isInteractionEnabled,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = dimensionResource(R.dimen.padding_medium))
+                .padding(bottom = dimensionResource(R.dimen.padding_large)),
+            shape = MaterialTheme.shapes.large
         ) {
 
             Text(
-                text = stringResource(id = R.string.general_seller_dsm_continue)
+                text = stringResource(id = R.string.general_seller_dsm_continue),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(vertical = dimensionResource(R.dimen.padding_small))
             )
         }
     }

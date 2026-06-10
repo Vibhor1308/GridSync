@@ -57,7 +57,7 @@ fun DashboardScreen(onDsmClick: () -> Unit) {
 
                 Image(
                     painter = painterResource(R.drawable.gs_logo),
-                    contentDescription = null,
+                    contentDescription = stringResource(id = R.string.splash_logo_content_description),
                     modifier = Modifier.size(dimensionResource(id = R.dimen.logo_size_medium))
                 )
 

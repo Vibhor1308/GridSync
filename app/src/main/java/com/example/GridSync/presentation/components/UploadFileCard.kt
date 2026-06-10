@@ -24,6 +24,7 @@ import com.example.GridSync.R
 
 @Composable
 fun UploadFileCard(
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
 
@@ -31,7 +32,7 @@ fun UploadFileCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(dimensionResource(id = R.dimen.upload_card_height))
-            .clickable {
+            .clickable(enabled = enabled) {
                 onClick()
             },
         shape = RoundedCornerShape(dimensionResource(id = R.dimen.card_corner_radius))
@@ -45,7 +46,7 @@ fun UploadFileCard(
 
             Icon(
                 imageVector = Icons.Default.UploadFile,
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.common_upload_icon),
                 modifier = Modifier.size(dimensionResource(id = R.dimen.upload_icon_size)),
                 tint = MaterialTheme.colorScheme.primary
             )
