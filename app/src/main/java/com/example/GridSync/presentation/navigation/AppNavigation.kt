@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.GridSync.presentation.dashboard.DashboardScreen
 import com.example.GridSync.presentation.dsm.DSMScreen
+import com.example.GridSync.presentation.dsm.generalsellerdsm.GeneralSellerDsmScreen
 import com.example.GridSync.presentation.splash.SplashScreen
 
 @Composable
@@ -34,6 +35,30 @@ fun AppNavigation() {
 
         composable(AppRoutes.DSM) {
             DSMScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+
+                onGeneralSellerClick = {
+                    navController.navigate(
+                        AppRoutes.GENERAL_SELLER_DSM
+                    )
+                },
+
+                onWindClick = {
+                    // Future
+                },
+
+                onSolarClick = {
+                    // Future
+                }
+
+            )
+        }
+
+        composable(AppRoutes.GENERAL_SELLER_DSM) {
+
+            GeneralSellerDsmScreen(
                 onBackClick = {
                     navController.popBackStack()
                 }
