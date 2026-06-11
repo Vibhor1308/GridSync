@@ -44,4 +44,11 @@
     <!-- Upload File Card -->
     <string name="upload_file_card_tap">Tap to Select Excel File</string>
     <string name="upload_file_card_format">Supported Format: .xlsx, .csv</string>
+
+    <!-- File Validation Screen -->
+    <string name="file_validation_title">File Validation</string>
+    <string name="file_validation_subtitle">Verify selected file metadata</string>
+    <string name="file_validation_rows">Rows</string>
+    <string name="file_validation_columns">Columns</string>
+    <string name="file_validation_sheet_name">Sheet Name</string>
 </resources>

@@ -7,6 +7,8 @@ data class DsmWorkflowUiState(
     val dsmType: DsmType? = null,
     val selectedFileName: String? = null,
     val selectedFileUri: Uri? = null,
-    val isFileSelected: Boolean = false
+    val isFileSelected: Boolean = false,
+    val isProcessingFile: Boolean = false,
+    val fileMetadata: FileMetadata? = null
 
 )

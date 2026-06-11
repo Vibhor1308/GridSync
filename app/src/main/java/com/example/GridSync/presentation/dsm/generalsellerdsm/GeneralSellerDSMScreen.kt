@@ -16,7 +16,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,7 +25,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.GridSync.R
 import com.example.GridSync.presentation.components.UploadFileCard
 import com.example.GridSync.presentation.dsm.common.DsmType
@@ -36,21 +34,16 @@ import com.example.GridSync.utils.getFileName
 
 @Composable
 fun GeneralSellerDsmScreen(
-    onBackClick: () -> Unit
+    viewModel: DsmWorkflowViewModel,
+    onBackClick: () -> Unit,
+    onContinueClick: () -> Unit
 ) {
 
-    val viewModel: DsmWorkflowViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
     val isInteractionEnabled = lifecycleState.isAtLeast(Lifecycle.State.RESUMED)
-
-    LaunchedEffect(Unit) {
-        viewModel.setDsmType(
-            DsmType.GENERAL_SELLER
-        )
-    }
 
     val launcher =
         rememberLauncherForActivityResult(
@@ -151,7 +144,7 @@ fun GeneralSellerDsmScreen(
         )
 
         Button(
-            onClick = {},
+            onClick = onContinueClick,
             enabled = uiState.isFileSelected && isInteractionEnabled,
             modifier = Modifier
                 .fillMaxWidth()

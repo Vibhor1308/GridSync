@@ -36,4 +36,26 @@ class DsmWorkflowViewModel : ViewModel() {
                 selectedFileUri = uri
             )
     }
+
+    fun setFileMetadata(
+        metadata: FileMetadata
+    ){
+        _uiState.value = _uiState.value.copy(
+            fileMetadata = metadata,
+            isProcessingFile = false
+        )
+    }
+
+    fun setProcessing(processing: Boolean) {
+        _uiState.value = _uiState.value.copy(isProcessingFile = processing)
+    }
+
+    fun clearFileSelection() {
+        _uiState.value = _uiState.value.copy(
+            selectedFileName = null,
+            selectedFileUri = null,
+            isFileSelected = false,
+            fileMetadata = null
+        )
+    }
 }
