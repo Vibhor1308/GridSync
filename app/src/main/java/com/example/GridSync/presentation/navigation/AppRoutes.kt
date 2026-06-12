@@ -13,4 +13,6 @@ object AppRoutes {
         const val WIND_DSM = "wind_dsm"
 
         const val SOLAR_DSM = "solar_dsm"
+
+        const val FILE_VALIDATION = "file_validation"
 }

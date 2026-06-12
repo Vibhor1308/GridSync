@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">GridSync</string>
     <string name="power_operations_suite">Power Operations Suite</string>
+    <string name="common_back">Back</string>
+    <string name="common_upload_icon">Upload Icon</string>
 
     <!-- Splash Screen -->
     <string name="splash_generation">Generation</string>
@@ -30,4 +32,23 @@
     <string name="dsm_type_wind_desc">Wind Power Generators</string>
     <string name="dsm_type_solar">Solar DSM</string>
     <string name="dsm_type_solar_desc">Solar Power Generators</string>
+
+    <!-- General Seller DSM Screen -->
+    <string name="general_seller_dsm_title">General Seller DSM</string>
+    <string name="general_seller_dsm_subtitle">Deviation Settlement Calculation</string>
+    <string name="general_seller_dsm_step_1">Step 1 of 4</string>
+    <string name="general_seller_dsm_upload_title">Upload DSM Input File</string>
+    <string name="general_seller_dsm_no_file">No file selected</string>
+    <string name="general_seller_dsm_continue">Continue</string>
+
+    <!-- Upload File Card -->
+    <string name="upload_file_card_tap">Tap to Select Excel File</string>
+    <string name="upload_file_card_format">Supported Format: .xlsx, .csv</string>
+
+    <!-- File Validation Screen -->
+    <string name="file_validation_title">File Validation</string>
+    <string name="file_validation_subtitle">Verify selected file metadata</string>
+    <string name="file_validation_rows">Rows</string>
+    <string name="file_validation_columns">Columns</string>
+    <string name="file_validation_sheet_name">Sheet Name</string>
 </resources>

@@ -108,7 +108,7 @@ private fun DSMHeader(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = stringResource(id = R.string.common_back),
                 tint = MaterialTheme.colorScheme.onBackground
             )
         }

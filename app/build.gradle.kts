@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.GridSync"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -58,4 +58,5 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.9.0")
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("org.apache.poi:poi-ooxml:5.2.5")
 }
