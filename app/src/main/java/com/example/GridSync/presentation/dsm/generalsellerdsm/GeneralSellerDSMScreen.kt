@@ -104,6 +104,18 @@ fun GeneralSellerDsmScreen(
             color = MaterialTheme.colorScheme.onBackground
         )
 
+        uiState.selectedProject?.let { project ->
+            Spacer(
+                modifier = Modifier.height(dimensionResource(R.dimen.spacing_small))
+            )
+            Text(
+                text = project.displayName,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
         Spacer(
             modifier = Modifier.height(dimensionResource(R.dimen.spacing_xlarge))
         )

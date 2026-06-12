@@ -45,6 +45,10 @@
     <string name="upload_file_card_tap">Tap to Select Excel File</string>
     <string name="upload_file_card_format">Supported Format: .xlsx, .csv</string>
 
+    <!-- General Seller Project Selection Screen -->
+    <string name="project_selection_title">Select Project</string>
+    <string name="project_selection_subtitle">Choose the project for DSM calculation</string>
+
     <!-- File Validation Screen -->
     <string name="file_validation_title">File Validation</string>
     <string name="file_validation_subtitle">Verify selected file metadata</string>
