@@ -28,33 +28,70 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.GridSync.R
 import com.example.GridSync.presentation.dsm.common.DsmWorkflowViewModel
+import com.example.GridSync.presentation.dsm.common.validation.ValidationStatus
+import com.example.GridSync.presentation.dsm.generalsellerdsm.GeneralSellerViewModel
 import com.example.GridSync.presentation.dsm.utils.readCsvMetadata
 import com.example.GridSync.presentation.dsm.utils.readExcelMetadata
+import com.example.GridSync.ui.theme.ErrorRed
+import com.example.GridSync.ui.theme.SuccessGreen
+import com.example.GridSync.ui.theme.WarningYellow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Composable
 fun FileValidationScreen(
-    viewModel: DsmWorkflowViewModel,
+    dsmWorkflowViewModel: DsmWorkflowViewModel,
+    generalSellerViewModel: GeneralSellerViewModel,
     onBackClick: () -> Unit,
     onContinueClick: () -> Unit
 ) {
 
-    val uiState by viewModel.uiState.collectAsState()
+    val dsmWorkflowUiState by dsmWorkflowViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(uiState.selectedFileUri) {
+    LaunchedEffect(dsmWorkflowUiState.fileMetadata) {
 
-        val uri = uiState.selectedFileUri ?: return@LaunchedEffect
-        val fileName = uiState.selectedFileName ?: return@LaunchedEffect
+        val metadata =
+            dsmWorkflowUiState.fileMetadata
+                ?: return@LaunchedEffect
+
+        if (
+            dsmWorkflowUiState.validationResults.isNotEmpty()
+        ) {
+            return@LaunchedEffect
+        }
+
+        val fileName =
+            dsmWorkflowUiState.selectedFileName
+                ?: return@LaunchedEffect
+
+        val results =
+            generalSellerViewModel.runValidation(
+                fileName = fileName,
+                metadata = metadata
+            )
+
+        dsmWorkflowViewModel
+            .setValidationResults(results)
+    }
+
+    LaunchedEffect(dsmWorkflowUiState.selectedFileUri) {
+
+        if (dsmWorkflowUiState.fileMetadata != null) {
+            return@LaunchedEffect
+        }
+
+        val uri = dsmWorkflowUiState.selectedFileUri ?: return@LaunchedEffect
+        val fileName = dsmWorkflowUiState.selectedFileName ?: return@LaunchedEffect
         
-        viewModel.setProcessing(true)
+        dsmWorkflowViewModel.setProcessing(true)
         
         try {
             val metadata = withContext(Dispatchers.IO) {
@@ -70,14 +107,20 @@ fun FileValidationScreen(
             }
 
             metadata?.let {
-                viewModel.setFileMetadata(it)
-            } ?: viewModel.setProcessing(false)
+                dsmWorkflowViewModel.setFileMetadata(it)
+            } ?: dsmWorkflowViewModel.setProcessing(false)
 
         } catch (e: Exception) {
-            viewModel.setProcessing(false)
+            dsmWorkflowViewModel.setProcessing(false)
             Log.e("FileValidation", "Failed to read file", e)
         }
     }
+
+    val canProceed =
+        dsmWorkflowUiState.validationResults.isNotEmpty() &&
+                dsmWorkflowUiState.validationResults.none {
+                    it.status == ValidationStatus.FAIL
+                }
 
     Column(
         modifier = Modifier
@@ -92,13 +135,20 @@ fun FileValidationScreen(
             modifier = Modifier.height(dimensionResource(R.dimen.spacing_dsm_top))
         )
 
-        FileValidationHeader(onBackClick = onBackClick)
+        val headerTitle = dsmWorkflowUiState.selectedProject?.displayName?.let {
+            stringResource(id = R.string.general_seller_project_dsm_title, it)
+        } ?: stringResource(id = R.string.file_validation_title)
+
+        FileValidationHeader(
+            onBackClick = onBackClick,
+            title = headerTitle
+        )
 
         Spacer(
             modifier = Modifier.height(dimensionResource(R.dimen.spacing_xlarge))
         )
 
-        if (uiState.isProcessingFile) {
+        if (dsmWorkflowUiState.isProcessingFile) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -111,7 +161,7 @@ fun FileValidationScreen(
             }
         } else {
             Text(
-                text = uiState.selectedFileName ?: stringResource(id = R.string.general_seller_dsm_no_file),
+                text = dsmWorkflowUiState.selectedFileName ?: stringResource(id = R.string.general_seller_dsm_no_file),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold
@@ -132,7 +182,7 @@ fun FileValidationScreen(
                 )
             ) {
 
-                val metadata = uiState.fileMetadata
+                val metadata = dsmWorkflowUiState.fileMetadata
 
                 Column(
                     modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
@@ -167,13 +217,70 @@ fun FileValidationScreen(
             }
 
             Spacer(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.height(dimensionResource(R.dimen.spacing_large))
             )
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                dsmWorkflowUiState.validationResults.forEach { result ->
+
+                    val statusColor = getStatusColor(result.status)
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = getStatusSymbol(result.status),
+                            color = statusColor,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+
+                        Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small)))
+
+                        Text(
+                            text = result.validationName,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+
+                    Text(
+                        text = result.message,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                        modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_large))
+                    )
+
+                    Spacer(
+                        modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small))
+                    )
+                }
+            }
+
+            if (dsmWorkflowUiState.validationResults.isNotEmpty()) {
+                Text(
+                    text = if (canProceed)
+                        stringResource(id = R.string.file_validation_status_ready)
+                    else
+                        stringResource(id = R.string.file_validation_status_failed),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = if (canProceed) SuccessGreen else ErrorRed,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+
+                Spacer(
+                    modifier = Modifier.height(dimensionResource(id = R.dimen.padding_medium))
+                )
+            }
         }
 
         Button(
             onClick = onContinueClick,
-            enabled = !uiState.isProcessingFile,
+            enabled = !dsmWorkflowUiState.isProcessingFile && canProceed,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = dimensionResource(R.dimen.padding_large)),
@@ -190,8 +297,34 @@ fun FileValidationScreen(
 }
 
 @Composable
+private fun getStatusColor(
+    status: ValidationStatus
+): Color {
+    return when (status) {
+        ValidationStatus.PASS -> SuccessGreen
+        ValidationStatus.FAIL -> ErrorRed
+        ValidationStatus.WARNING -> WarningYellow
+    }
+}
+
+private fun getStatusSymbol(
+    status: ValidationStatus
+): String {
+
+    return when(status) {
+
+        ValidationStatus.PASS -> "✓"
+
+        ValidationStatus.FAIL -> "✗"
+
+        ValidationStatus.WARNING -> "⚠"
+    }
+}
+
+@Composable
 private fun FileValidationHeader(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    title: String = stringResource(id = R.string.file_validation_title)
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -210,7 +343,7 @@ private fun FileValidationHeader(
 
         Column {
             Text(
-                text = stringResource(id = R.string.file_validation_title),
+                text = title,
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onBackground
             )

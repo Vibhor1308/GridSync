@@ -25,3 +25,8 @@ val DsmBlue = Color(0xFF1565C0)
 val RtdaGreen = Color(0xFF2E7D32)
 val ReportsPurple = Color(0xFF7B1FA2)
 val FutureOrange = Color(0xFFEF6C00)
+
+// Status Colors
+val SuccessGreen = Color(0xFF2E7D32)
+val ErrorRed = Color(0xFFD32F2F)
+val WarningYellow = Color(0xFFFBC02D)

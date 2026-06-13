@@ -35,6 +35,7 @@
 
     <!-- General Seller DSM Screen -->
     <string name="general_seller_dsm_title">General Seller DSM</string>
+    <string name="general_seller_project_dsm_title">%1$s DSM</string>
     <string name="general_seller_dsm_subtitle">Deviation Settlement Calculation</string>
     <string name="general_seller_dsm_step_1">Step 1 of 4</string>
     <string name="general_seller_dsm_upload_title">Upload DSM Input File</string>
@@ -55,4 +56,6 @@
     <string name="file_validation_rows">Rows</string>
     <string name="file_validation_columns">Columns</string>
     <string name="file_validation_sheet_name">Sheet Name</string>
+    <string name="file_validation_status_ready">Ready to Proceed</string>
+    <string name="file_validation_status_failed">Validation Failed</string>
 </resources>

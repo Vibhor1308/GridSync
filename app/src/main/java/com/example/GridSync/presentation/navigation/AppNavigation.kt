@@ -51,7 +51,7 @@ fun AppNavigation() {
 
                 onGeneralSellerClick = {
                     if (navController.currentDestination?.route == AppRoutes.DSM) {
-                        dsmWorkflowViewModel.clearFileSelection()
+                        dsmWorkflowViewModel.clearAll()
                         dsmWorkflowViewModel.setDsmType(DsmType.GENERAL_SELLER)
                         generalSellerViewModel.clearSelection()
                         navController.navigate(AppRoutes.GENERAL_SELLER_PROJECT_SELECTION)
@@ -107,8 +107,10 @@ fun AppNavigation() {
         composable(AppRoutes.FILE_VALIDATION) {
 
             FileValidationScreen(
-                viewModel = dsmWorkflowViewModel,
+                dsmWorkflowViewModel = dsmWorkflowViewModel,
+                generalSellerViewModel = generalSellerViewModel,
                 onBackClick = {
+                    dsmWorkflowViewModel.clearFileSelection()
                     navController.popBackStack()
                 },
 

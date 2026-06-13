@@ -3,6 +3,7 @@ package com.example.GridSync.presentation.dsm.common
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.GridSync.presentation.dsm.generalsellerdsm.model.GeneralSellerProject
+import com.example.GridSync.presentation.dsm.common.validation.ValidationResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -43,7 +44,9 @@ class DsmWorkflowViewModel : ViewModel() {
             _uiState.value.copy(
                 selectedFileName = fileName,
                 isFileSelected = true,
-                selectedFileUri = uri
+                selectedFileUri = uri,
+                fileMetadata = null,
+                validationResults = emptyList()
             )
     }
 
@@ -60,13 +63,27 @@ class DsmWorkflowViewModel : ViewModel() {
         _uiState.value = _uiState.value.copy(isProcessingFile = processing)
     }
 
+    fun clearAll() {
+        _uiState.value = DsmWorkflowUiState()
+    }
+
     fun clearFileSelection() {
         _uiState.value = _uiState.value.copy(
             selectedFileName = null,
             selectedFileUri = null,
             isFileSelected = false,
             fileMetadata = null,
-            selectedProject = null
+            validationResults = emptyList()
         )
+    }
+
+    fun setValidationResults(
+        results: List<ValidationResult>
+    ) {
+
+        _uiState.value =
+            _uiState.value.copy(
+                validationResults = results
+            )
     }
 }
