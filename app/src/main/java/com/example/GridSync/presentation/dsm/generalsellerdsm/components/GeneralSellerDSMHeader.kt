@@ -16,7 +16,8 @@ import com.example.GridSync.R
 
 @Composable
 fun GeneralSellerDsmHeader(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    subtitle: String = stringResource(id = R.string.general_seller_dsm_subtitle)
 ) {
 
     Row(
@@ -43,7 +44,7 @@ fun GeneralSellerDsmHeader(
             )
 
             Text(
-                text = stringResource(id = R.string.general_seller_dsm_subtitle),
+                text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground.copy(
                     alpha = 0.7f

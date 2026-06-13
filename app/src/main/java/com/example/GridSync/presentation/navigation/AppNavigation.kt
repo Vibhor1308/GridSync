@@ -10,6 +10,8 @@ import com.example.GridSync.presentation.dsm.DSMScreen
 import com.example.GridSync.presentation.dsm.common.DsmType
 import com.example.GridSync.presentation.dsm.common.DsmWorkflowViewModel
 import com.example.GridSync.presentation.dsm.generalsellerdsm.GeneralSellerDsmScreen
+import com.example.GridSync.presentation.dsm.generalsellerdsm.GeneralSellerViewModel
+import com.example.GridSync.presentation.dsm.generalsellerdsm.ProjectSelectionScreen
 import com.example.GridSync.presentation.dsm.validation.FileValidationScreen
 import com.example.GridSync.presentation.splash.SplashScreen
 
@@ -18,6 +20,9 @@ fun AppNavigation() {
 
     val navController = rememberNavController()
     val dsmWorkflowViewModel: DsmWorkflowViewModel = viewModel()
+    val generalSellerViewModel:
+            GeneralSellerViewModel =
+        viewModel()
 
     NavHost(
         navController = navController,
@@ -48,7 +53,8 @@ fun AppNavigation() {
                     if (navController.currentDestination?.route == AppRoutes.DSM) {
                         dsmWorkflowViewModel.clearFileSelection()
                         dsmWorkflowViewModel.setDsmType(DsmType.GENERAL_SELLER)
-                        navController.navigate(AppRoutes.GENERAL_SELLER_DSM)
+                        generalSellerViewModel.clearSelection()
+                        navController.navigate(AppRoutes.GENERAL_SELLER_PROJECT_SELECTION)
                     }
                 },
 
@@ -60,6 +66,26 @@ fun AppNavigation() {
                     // Future
                 }
 
+            )
+        }
+
+        composable(
+            AppRoutes.GENERAL_SELLER_PROJECT_SELECTION
+        ) {
+
+            ProjectSelectionScreen(
+
+                viewModel = generalSellerViewModel,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+
+                onContinueClick = {
+                    dsmWorkflowViewModel.setProject(generalSellerViewModel.uiState.value.selectedProject)
+                    navController.navigate(
+                        AppRoutes.GENERAL_SELLER_DSM
+                    )
+                }
             )
         }
 
