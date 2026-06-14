@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -162,69 +164,72 @@ fun FileValidationScreen(
                 )
             }
         } else {
-            Text(
-                text = dsmWorkflowUiState.selectedFileName ?: stringResource(id = R.string.general_seller_dsm_no_file),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.SemiBold
-            )
-
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.spacing_large))
-            )
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.large,
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = dimensionResource(id = R.dimen.card_elevation)
-                )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
             ) {
+                Text(
+                    text = dsmWorkflowUiState.selectedFileName ?: stringResource(id = R.string.general_seller_dsm_no_file),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold
+                )
 
-                val metadata = dsmWorkflowUiState.fileMetadata
+                Spacer(
+                    modifier = Modifier.height(dimensionResource(R.dimen.spacing_large))
+                )
 
-                Column(
-                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.large,
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = dimensionResource(id = R.dimen.card_elevation)
+                    )
                 ) {
 
-                    MetadataItem(
-                        label = stringResource(id = R.string.file_validation_rows),
-                        value = metadata?.rowCount?.toString() ?: "-"
-                    )
+                    val metadata = dsmWorkflowUiState.fileMetadata
 
-                    Spacer(
-                        modifier = Modifier.height(dimensionResource(R.dimen.padding_medium))
-                    )
+                    Column(
+                        modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
+                    ) {
 
-                    MetadataItem(
-                        label = stringResource(id = R.string.file_validation_columns),
-                        value = metadata?.columnCount?.toString() ?: "-"
-                    )
-
-                    metadata?.sheetName?.let { sheetName ->
+                        MetadataItem(
+                            label = stringResource(id = R.string.file_validation_rows),
+                            value = metadata?.rowCount?.toString() ?: "-"
+                        )
 
                         Spacer(
                             modifier = Modifier.height(dimensionResource(R.dimen.padding_medium))
                         )
 
                         MetadataItem(
-                            label = stringResource(id = R.string.file_validation_sheet_name),
-                            value = sheetName
+                            label = stringResource(id = R.string.file_validation_columns),
+                            value = metadata?.columnCount?.toString() ?: "-"
                         )
+
+                        metadata?.sheetName?.let { sheetName ->
+
+                            Spacer(
+                                modifier = Modifier.height(dimensionResource(R.dimen.padding_medium))
+                            )
+
+                            MetadataItem(
+                                label = stringResource(id = R.string.file_validation_sheet_name),
+                                value = sheetName
+                            )
+                        }
                     }
                 }
-            }
 
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.spacing_large))
-            )
+                Spacer(
+                    modifier = Modifier.height(dimensionResource(R.dimen.spacing_large))
+                )
 
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
                 dsmWorkflowUiState.validationResults.forEach { result ->
 
                     val statusColor = getStatusColor(result.status)
@@ -260,23 +265,27 @@ fun FileValidationScreen(
                         modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small))
                     )
                 }
-            }
 
-            if (dsmWorkflowUiState.validationResults.isNotEmpty()) {
-                Text(
-                    text = if (canProceed)
-                        stringResource(id = R.string.file_validation_status_ready)
-                    else
-                        stringResource(id = R.string.file_validation_status_failed),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = if (canProceed) SuccessGreen else ErrorRed,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
+                if (dsmWorkflowUiState.validationResults.isNotEmpty()) {
+                    Spacer(
+                        modifier = Modifier.height(dimensionResource(id = R.dimen.padding_medium))
+                    )
 
-                Spacer(
-                    modifier = Modifier.height(dimensionResource(id = R.dimen.padding_medium))
-                )
+                    Text(
+                        text = if (canProceed)
+                            stringResource(id = R.string.file_validation_status_ready)
+                        else
+                            stringResource(id = R.string.file_validation_status_failed),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (canProceed) SuccessGreen else ErrorRed,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+
+                    Spacer(
+                        modifier = Modifier.height(dimensionResource(id = R.dimen.padding_medium))
+                    )
+                }
             }
         }
 

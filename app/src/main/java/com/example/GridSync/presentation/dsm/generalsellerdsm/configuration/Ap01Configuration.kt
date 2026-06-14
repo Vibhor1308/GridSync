@@ -10,7 +10,7 @@ object Ap01Configuration {
             "greenko_kurnool_psp_firm"
         ),
 
-        expectedRecordCount = 673,
+        expectedRecordCount = 672,
 
         expectedBlocksPerDay = 96,
 

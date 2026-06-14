@@ -1,6 +1,7 @@
 package com.example.GridSync.presentation.dsm.common.validation
 
 import com.example.GridSync.presentation.dsm.common.configuration.ProjectConfiguration
+import com.example.GridSync.presentation.dsm.common.model.DsmTimeBlock
 import java.time.LocalDate
 
 data class ValidationContext(
@@ -12,6 +13,7 @@ data class ValidationContext(
     val detectedStartDate: LocalDate?,
     val detectedEndDate: LocalDate?,
     val configuration: ProjectConfiguration,
+    val timeBlocks: List<DsmTimeBlock>,
 ){
     val normalizedHeaders: Set<String>
         get() = headers.map {

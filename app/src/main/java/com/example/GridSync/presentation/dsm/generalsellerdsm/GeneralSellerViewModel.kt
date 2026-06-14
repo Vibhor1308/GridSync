@@ -58,7 +58,8 @@ class GeneralSellerViewModel : ViewModel() {
                 metadata.detectedStartDate,
             detectedEndDate =
                 metadata.detectedEndDate,
-            configuration = configuration
+            configuration = configuration,
+            timeBlocks = metadata.timeBlocks
         )
 
         val validator =
