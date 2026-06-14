@@ -88,6 +88,13 @@ class DsmWorkflowViewModel : ViewModel() {
         _uiState.value = DsmWorkflowUiState()
     }
 
+    fun clearDateSelection() {
+        _uiState.value = _uiState.value.copy(
+            selectedStartDate = null,
+            selectedEndDate = null
+        )
+    }
+
     fun clearFileSelection() {
         _uiState.value = _uiState.value.copy(
             selectedFileName = null,

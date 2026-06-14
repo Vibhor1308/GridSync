@@ -50,6 +50,14 @@
     <string name="project_selection_title">Select Project</string>
     <string name="project_selection_subtitle">Choose the project for DSM calculation</string>
 
+    <!-- Date Selection Screen -->
+    <string name="date_selection_title">Select DSM Period</string>
+    <string name="date_selection_subtitle">Choose the start and end dates for the calculation</string>
+    <string name="date_selection_start_date">Start Date</string>
+    <string name="date_selection_end_date">End Date</string>
+    <string name="date_selection_choose_button">Choose Date</string>
+    <string name="date_selection_select_hint">Select Date</string>
+
     <!-- File Validation Screen -->
     <string name="file_validation_title">File Validation</string>
     <string name="file_validation_subtitle">Verify selected file metadata</string>

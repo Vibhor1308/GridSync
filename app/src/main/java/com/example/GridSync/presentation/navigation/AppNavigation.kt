@@ -83,6 +83,7 @@ fun AppNavigation() {
 
                 onContinueClick = {
                     dsmWorkflowViewModel.setProject(generalSellerViewModel.uiState.value.selectedProject)
+                    dsmWorkflowViewModel.clearDateSelection()
                     navController.navigate(
                         AppRoutes.DATE_SELECTION
                     )
@@ -130,8 +131,12 @@ fun AppNavigation() {
                 dsmWorkflowViewModel =
                     dsmWorkflowViewModel,
 
-                onContinueClick = {
+                onBackClick = {
+                    navController.popBackStack()
+                },
 
+                onContinueClick = {
+                    dsmWorkflowViewModel.clearFileSelection()
                     navController.navigate(
                         AppRoutes.FILE_SELECTION
                     )
