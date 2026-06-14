@@ -3,6 +3,8 @@ package com.example.GridSync.presentation.dsm.common
 import android.net.Uri
 
 import com.example.GridSync.presentation.dsm.generalsellerdsm.model.GeneralSellerProject
+import com.example.GridSync.presentation.dsm.common.validation.ValidationResult
+import java.time.LocalDate
 
 data class DsmWorkflowUiState(
 
@@ -12,6 +14,9 @@ data class DsmWorkflowUiState(
     val selectedFileUri: Uri? = null,
     val isFileSelected: Boolean = false,
     val isProcessingFile: Boolean = false,
-    val fileMetadata: FileMetadata? = null
+    val fileMetadata: FileMetadata? = null,
+    val validationResults: List<ValidationResult> = emptyList(),
+    val selectedStartDate: LocalDate? = null,
+    val selectedEndDate: LocalDate? = null
 
 )

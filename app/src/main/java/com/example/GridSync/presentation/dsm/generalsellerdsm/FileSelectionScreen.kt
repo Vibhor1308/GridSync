@@ -27,13 +27,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.Lifecycle
 import com.example.GridSync.R
 import com.example.GridSync.presentation.components.UploadFileCard
-import com.example.GridSync.presentation.dsm.common.DsmType
 import com.example.GridSync.presentation.dsm.common.DsmWorkflowViewModel
 import com.example.GridSync.presentation.dsm.generalsellerdsm.components.GeneralSellerDsmHeader
 import com.example.GridSync.utils.getFileName
 
 @Composable
-fun GeneralSellerDsmScreen(
+fun FileSelectionScreen(
     viewModel: DsmWorkflowViewModel,
     onBackClick: () -> Unit,
     onContinueClick: () -> Unit
@@ -80,8 +79,13 @@ fun GeneralSellerDsmScreen(
             modifier = Modifier.height(dimensionResource(R.dimen.spacing_dsm_top))
         )
 
+        val headerTitle = uiState.selectedProject?.displayName?.let {
+            stringResource(id = R.string.general_seller_project_dsm_title, it)
+        } ?: stringResource(id = R.string.general_seller_dsm_title)
+
         GeneralSellerDsmHeader(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            title = headerTitle
         )
 
         Spacer(
@@ -103,18 +107,6 @@ fun GeneralSellerDsmScreen(
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
-
-        uiState.selectedProject?.let { project ->
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.spacing_small))
-            )
-            Text(
-                text = project.displayName,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold
-            )
-        }
 
         Spacer(
             modifier = Modifier.height(dimensionResource(R.dimen.spacing_xlarge))
