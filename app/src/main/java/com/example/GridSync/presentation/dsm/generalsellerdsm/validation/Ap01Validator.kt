@@ -4,6 +4,7 @@ import com.example.GridSync.presentation.dsm.common.validation.DsmValidator
 import com.example.GridSync.presentation.dsm.common.validation.ValidationContext
 import com.example.GridSync.presentation.dsm.common.validation.ValidationResult
 import com.example.GridSync.presentation.dsm.common.validation.rules.DateRangeValidationRule
+import com.example.GridSync.presentation.dsm.common.validation.rules.DuplicateDateTimeValidationRule
 import com.example.GridSync.presentation.dsm.common.validation.rules.FileNameValidationRule
 import com.example.GridSync.presentation.dsm.common.validation.rules.RecordCountValidationRule
 import com.example.GridSync.presentation.dsm.common.validation.rules.RecordsPerDayValidationRule
@@ -36,7 +37,9 @@ class Ap01Validator: DsmValidator {
             ) ,
 
             TimeBlockContinuityValidationRule
-                .validate(context)
+                .validate(context),
+
+            DuplicateDateTimeValidationRule.validate(context)
 
         )
     }
