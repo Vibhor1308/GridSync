@@ -19,21 +19,23 @@ import java.util.Locale
  */
 
 private val DATE_FORMATTERS = listOf(
-    DateTimeFormatter.ISO_LOCAL_DATE,
     DateTimeFormatter.ofPattern("dd-MM-yyyy"),
     DateTimeFormatter.ofPattern("dd/MM/yyyy"),
     DateTimeFormatter.ofPattern("yyyy-MM-dd"),
-    DateTimeFormatter.ofPattern("dd-MMM-yyyy")
+    DateTimeFormatter.ofPattern("d-M-yyyy"),
+    DateTimeFormatter.ofPattern("dd-MMM-yyyy"),
+    DateTimeFormatter.ISO_LOCAL_DATE
 )
 
 private val TIME_FORMATTERS = listOf(
-    DateTimeFormatter.ISO_LOCAL_TIME,
-    DateTimeFormatter.ofPattern("HH:mm"),
     DateTimeFormatter.ofPattern("H:mm"),
+    DateTimeFormatter.ofPattern("HH:mm"),
+    DateTimeFormatter.ofPattern("H:mm:ss"),
     DateTimeFormatter.ofPattern("HH:mm:ss"),
     DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH),
     DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH),
-    DateTimeFormatter.ofPattern("H.mm") // Some industrial formats use dots
+    DateTimeFormatter.ofPattern("H.mm"),
+    DateTimeFormatter.ISO_LOCAL_TIME
 )
 
 private const val TAG = "DSMFileParser"
@@ -43,14 +45,19 @@ fun readCsvMetadata(
     uri: Uri
 ): FileMetadata {
 
-    Log.d(TAG,"[readCsvMetadata] start.")
+    Log.d(TAG, "[readCsvMetadata] start.")
 
     context.contentResolver
         .openInputStream(uri)
         ?.bufferedReader()
         ?.use { reader ->
 
-            val headerLine = reader.readLine()
+            var headerLine = reader.readLine()
+            
+            // Handle UTF-8 BOM if present
+            if (headerLine?.startsWith("\uFEFF") == true) {
+                headerLine = headerLine.substring(1)
+            }
 
             val headers =
                 headerLine
@@ -60,85 +67,39 @@ fun readCsvMetadata(
 
             val dateColumnIndex =
                 headers.indexOfFirst {
-                    it.equals(
-                        "date",
-                        ignoreCase = true
-                    )
+                    it.contains("date", ignoreCase = true)
                 }
 
             val timeColumnIndex =
                 headers.indexOfFirst {
-                    it.equals(
-                        "time",
-                        ignoreCase = true
-                    )
+                    it.contains("time", ignoreCase = true)
                 }
 
             var detectedStartDate: LocalDate? = null
-
             var detectedEndDate: LocalDate? = null
-
-            val timeBlocks =
-                mutableListOf<DsmTimeBlock>()
-
+            val timeBlocks = mutableListOf<DsmTimeBlock>()
             var rowCount = 0
-
             var line: String?
 
-            while (
-                reader.readLine().also {
-                    line = it
-                } != null
-            ) {
-
+            while (reader.readLine().also { line = it } != null) {
+                if (line!!.isBlank()) continue
                 rowCount++
 
-                val values =
-                    line!!
-                        .split(",")
-                        .map {
-                            it.trim()
-                        }
+                val values = line!!.split(",").map { it.trim() }
 
-                // Date Extraction
-                if (
-                    dateColumnIndex >= 0 &&
-                    values.size > dateColumnIndex
-                ) {
-
-                    val parsedDate =
-                        parseLocalDate(
-                            values[dateColumnIndex]
-                        )
+                if (dateColumnIndex >= 0 && values.size > dateColumnIndex) {
+                    val dateString = values[dateColumnIndex]
+                    val parsedDate = parseLocalDate(dateString)
 
                     if (parsedDate != null) {
-
-                        if (
-                            detectedStartDate == null ||
-                            parsedDate.isBefore(
-                                detectedStartDate
-                            )
-                        ) {
-                            detectedStartDate =
-                                parsedDate
+                        if (detectedStartDate == null || parsedDate.isBefore(detectedStartDate)) {
+                            detectedStartDate = parsedDate
+                        }
+                        if (detectedEndDate == null || parsedDate.isAfter(detectedEndDate)) {
+                            detectedEndDate = parsedDate
                         }
 
-                        if (
-                            detectedEndDate == null ||
-                            parsedDate.isAfter(
-                                detectedEndDate
-                            )
-                        ) {
-                            detectedEndDate =
-                                parsedDate
-                        }
-
-                        // Create DsmTimeBlock
-                        if (
-                            timeColumnIndex >= 0 &&
-                            values.size > timeColumnIndex
-                        ) {
-
+                        if (timeColumnIndex >= 0 && values.size > timeColumnIndex) {
                             val timeString = values[timeColumnIndex]
                             val parsedTime = parseLocalTime(timeString)
 
@@ -150,46 +111,37 @@ fun readCsvMetadata(
                                     )
                                 )
                             } else {
-                                Log.w(TAG, "[readCsvMetadata] Failed to parse time: $timeString at row $rowCount")
+                                Log.w(TAG, "[readCsvMetadata] Failed to parse time: '$timeString' at row $rowCount")
                             }
                         }
+                    } else {
+                        Log.w(TAG, "[readCsvMetadata] Failed to parse date: '$dateString' at row $rowCount")
                     }
                 }
             }
 
-            Log.d(TAG, "[readCsvMetadata], rowCount : $rowCount, timeBlocks : ${timeBlocks.size}")
+            Log.d(TAG, "[readCsvMetadata] Finished. Rows: $rowCount, Blocks: ${timeBlocks.size}")
 
             return FileMetadata(
-
                 rowCount = rowCount,
-
                 columnCount = headers.size,
-
                 fileType = "CSV File",
-
                 sheetName = null,
-
                 headers = headers,
-
-                detectedStartDate =
-                    detectedStartDate,
-
-                detectedEndDate =
-                    detectedEndDate,
-
+                detectedStartDate = detectedStartDate,
+                detectedEndDate = detectedEndDate,
                 timeBlocks = timeBlocks
             )
         }
 
-    throw IllegalArgumentException(
-        "Unable to open CSV file"
-    )
+    throw IllegalArgumentException("Unable to open CSV file")
 }
+
 fun readExcelMetadata(
     context: Context,
     uri: Uri
 ): FileMetadata {
-    Log.d(TAG,"[readExcelMetadata] start.")
+    Log.d(TAG, "[readExcelMetadata] start.")
     context.contentResolver.openInputStream(uri)?.use { inputStream ->
         WorkbookFactory.create(inputStream).use { workbook ->
             val sheet = workbook.getSheetAt(0)
@@ -203,7 +155,7 @@ fun readExcelMetadata(
                     val cell = headerRow.getCell(i)
                     val headerName = cell?.toString()?.trim() ?: ""
                     headers.add(headerName)
-                    if (headerName.equals("date", ignoreCase = true)) {
+                    if (headerName.contains("date", ignoreCase = true)) {
                         dateColumnIndex = i
                     }
                 }
@@ -241,7 +193,7 @@ fun readExcelMetadata(
             }
 
             return FileMetadata(
-                rowCount = sheet.physicalNumberOfRows,
+                rowCount = sheet.lastRowNum,
                 columnCount = headers.size,
                 fileType = if (workbook::class.java.simpleName.contains("XSSF")) "Excel Workbook (.xlsx)" else "Excel 97-2003 (.xls)",
                 sheetName = sheet.sheetName,

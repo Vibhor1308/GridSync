@@ -1,14 +1,29 @@
 package com.example.GridSync.presentation.dsm.common.validation.rules
 
+
+import android.util.Log
 import com.example.GridSync.presentation.dsm.common.validation.ValidationContext
 import com.example.GridSync.presentation.dsm.common.validation.ValidationResult
 import com.example.GridSync.presentation.dsm.common.validation.ValidationStatus
 
 object RecordsPerDayValidationRule {
 
+    private const val TAG = "RecordsPerDayValidationRule"
+
     fun validate(
         context: ValidationContext
     ): ValidationResult {
+
+        if (context.timeBlocks.isEmpty()) {
+            return ValidationResult(
+                validationName =
+                    "Records Per Day Validation",
+                status =
+                    ValidationStatus.FAIL,
+                message =
+                    "No time blocks available for validation"
+            )
+        }
 
         val invalidDays =
 
@@ -18,7 +33,7 @@ object RecordsPerDayValidationRule {
                 }
 
         return if (invalidDays.isEmpty()) {
-
+        Log.d(TAG,"[records per day validation -> pass]")
             ValidationResult(
                 validationName = "Records Per Day Validation",
 
@@ -30,7 +45,7 @@ object RecordsPerDayValidationRule {
             )
 
         } else {
-
+            Log.d(TAG,"[records per day validation -> pass]")
             ValidationResult(
                 validationName = "Records Per Day Validation",
 

@@ -112,7 +112,6 @@ fun AppNavigation() {
                 dsmWorkflowViewModel = dsmWorkflowViewModel,
                 generalSellerViewModel = generalSellerViewModel,
                 onBackClick = {
-                    dsmWorkflowViewModel.clearFileSelection()
                     navController.popBackStack()
                 },
 

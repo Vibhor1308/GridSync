@@ -1,5 +1,6 @@
 package com.example.GridSync.presentation.dsm.generalsellerdsm
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.GridSync.presentation.dsm.common.FileMetadata
 import com.example.GridSync.presentation.dsm.common.validation.ValidationContext
@@ -13,6 +14,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
 
 class GeneralSellerViewModel : ViewModel() {
+    companion object{
+        private const val TAG = "GeneralSellerViewModel"
+    }
 
     private val _uiState =
         MutableStateFlow(
@@ -60,6 +64,11 @@ class GeneralSellerViewModel : ViewModel() {
                 metadata.detectedEndDate,
             configuration = configuration,
             timeBlocks = metadata.timeBlocks
+        )
+
+        Log.d(
+            TAG,
+            "ValidationContext blocks=${metadata.timeBlocks.size}"
         )
 
         val validator =
