@@ -6,6 +6,7 @@ import com.example.GridSync.presentation.dsm.generalsellerdsm.model.GeneralSelle
 import com.example.GridSync.presentation.dsm.common.validation.ValidationResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.time.LocalDate
 
 class DsmWorkflowViewModel : ViewModel() {
 
@@ -57,6 +58,26 @@ class DsmWorkflowViewModel : ViewModel() {
             fileMetadata = metadata,
             isProcessingFile = false
         )
+    }
+
+    fun updateStartDate(
+        date: LocalDate
+    ) {
+
+        _uiState.value =
+            _uiState.value.copy(
+                selectedStartDate = date
+            )
+    }
+
+    fun updateEndDate(
+        date: LocalDate
+    ) {
+
+        _uiState.value =
+            _uiState.value.copy(
+                selectedEndDate = date
+            )
     }
 
     fun setProcessing(processing: Boolean) {

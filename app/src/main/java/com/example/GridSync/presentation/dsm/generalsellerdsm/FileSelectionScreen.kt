@@ -32,7 +32,7 @@ import com.example.GridSync.presentation.dsm.generalsellerdsm.components.General
 import com.example.GridSync.utils.getFileName
 
 @Composable
-fun GeneralSellerDsmScreen(
+fun FileSelectionScreen(
     viewModel: DsmWorkflowViewModel,
     onBackClick: () -> Unit,
     onContinueClick: () -> Unit

@@ -5,6 +5,7 @@ import com.example.GridSync.presentation.dsm.common.validation.ValidationContext
 import com.example.GridSync.presentation.dsm.common.validation.ValidationResult
 import com.example.GridSync.presentation.dsm.common.validation.rules.FileNameValidationRule
 import com.example.GridSync.presentation.dsm.common.validation.rules.RecordCountValidationRule
+import com.example.GridSync.presentation.dsm.common.validation.rules.RequiredColumnsValidationRule
 
 class Ap01Validator: DsmValidator {
 
@@ -16,6 +17,10 @@ class Ap01Validator: DsmValidator {
             ),
 
             RecordCountValidationRule.validate(
+                context
+            ),
+
+            RequiredColumnsValidationRule.validate(
                 context
             )
 

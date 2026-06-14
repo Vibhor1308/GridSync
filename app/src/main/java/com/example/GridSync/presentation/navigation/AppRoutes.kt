@@ -8,7 +8,10 @@ object AppRoutes {
 
         const val DSM = "dsm"
 
-        const val GENERAL_SELLER_DSM = "general_seller_dsm"
+        const val DATE_SELECTION =
+                "date_selection"
+
+        const val FILE_SELECTION = "file_selection"
         const val GENERAL_SELLER_PROJECT_SELECTION =
                 "general_seller_project_selection"
 

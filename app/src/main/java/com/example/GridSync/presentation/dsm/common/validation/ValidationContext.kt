@@ -8,6 +8,10 @@ data class ValidationContext(
     val headers: List<String> = emptyList(),
     val selectedStartDate: String? = null,
     val selectedEndDate: String? = null,
-    val configuration: ProjectConfiguration
-
-)
+    val configuration: ProjectConfiguration,
+){
+    val normalizedHeaders: Set<String>
+        get() = headers.map {
+            it.trim().lowercase()
+        }.toSet()
+}

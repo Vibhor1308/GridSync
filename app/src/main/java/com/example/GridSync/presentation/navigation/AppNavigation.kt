@@ -5,11 +5,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.GridSync.presentation.common.DateSelectionScreen
 import com.example.GridSync.presentation.dashboard.DashboardScreen
 import com.example.GridSync.presentation.dsm.DSMScreen
 import com.example.GridSync.presentation.dsm.common.DsmType
 import com.example.GridSync.presentation.dsm.common.DsmWorkflowViewModel
-import com.example.GridSync.presentation.dsm.generalsellerdsm.GeneralSellerDsmScreen
+import com.example.GridSync.presentation.dsm.generalsellerdsm.FileSelectionScreen
 import com.example.GridSync.presentation.dsm.generalsellerdsm.GeneralSellerViewModel
 import com.example.GridSync.presentation.dsm.generalsellerdsm.ProjectSelectionScreen
 import com.example.GridSync.presentation.dsm.validation.FileValidationScreen
@@ -83,15 +84,15 @@ fun AppNavigation() {
                 onContinueClick = {
                     dsmWorkflowViewModel.setProject(generalSellerViewModel.uiState.value.selectedProject)
                     navController.navigate(
-                        AppRoutes.GENERAL_SELLER_DSM
+                        AppRoutes.DATE_SELECTION
                     )
                 }
             )
         }
 
-        composable(AppRoutes.GENERAL_SELLER_DSM) {
+        composable(AppRoutes.FILE_SELECTION) {
 
-            GeneralSellerDsmScreen(
+            FileSelectionScreen(
                 viewModel = dsmWorkflowViewModel,
                 onBackClick = {
                     navController.popBackStack()
@@ -116,6 +117,24 @@ fun AppNavigation() {
 
                 onContinueClick = {
                     // Next screen later
+                }
+            )
+        }
+
+        composable(
+            route = AppRoutes.DATE_SELECTION
+        ) {
+
+            DateSelectionScreen(
+
+                dsmWorkflowViewModel =
+                    dsmWorkflowViewModel,
+
+                onContinueClick = {
+
+                    navController.navigate(
+                        AppRoutes.FILE_SELECTION
+                    )
                 }
             )
         }
