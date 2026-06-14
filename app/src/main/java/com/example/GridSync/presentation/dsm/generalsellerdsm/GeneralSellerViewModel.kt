@@ -10,6 +10,7 @@ import com.example.GridSync.presentation.dsm.generalsellerdsm.model.GeneralSelle
 import com.example.GridSync.presentation.dsm.generalsellerdsm.validation.GeneralSellerValidatorFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.time.LocalDate
 
 class GeneralSellerViewModel : ViewModel() {
 
@@ -32,7 +33,9 @@ class GeneralSellerViewModel : ViewModel() {
 
     fun runValidation(
         fileName: String,
-        metadata: FileMetadata
+        metadata: FileMetadata,
+        selectedStartDate: LocalDate?,
+        selectedEndDate: LocalDate?
     ): List<ValidationResult> {
 
         val project =
@@ -43,13 +46,20 @@ class GeneralSellerViewModel : ViewModel() {
             GeneralSellerConfigurationProvider
                 .getConfiguration(project)
 
-        val validationContext =
-            ValidationContext(
-                fileName = fileName,
-                recordCount = metadata.rowCount,
-                headers = metadata.headers,
-                configuration = configuration
-            )
+        val validationContext = ValidationContext(
+            fileName = fileName,
+            recordCount = metadata.rowCount,
+            headers = metadata.headers,
+            selectedStartDate =
+                selectedStartDate,
+            selectedEndDate =
+                selectedEndDate,
+            detectedStartDate =
+                metadata.detectedStartDate,
+            detectedEndDate =
+                metadata.detectedEndDate,
+            configuration = configuration
+        )
 
         val validator =
             GeneralSellerValidatorFactory

@@ -75,7 +75,9 @@ fun FileValidationScreen(
         val results =
             generalSellerViewModel.runValidation(
                 fileName = fileName,
-                metadata = metadata
+                metadata = metadata,
+                dsmWorkflowUiState.selectedStartDate,
+                dsmWorkflowUiState.selectedEndDate
             )
 
         dsmWorkflowViewModel

@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import com.example.GridSync.presentation.dsm.common.FileMetadata
 import org.apache.poi.ss.usermodel.WorkbookFactory
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /**
  * Utility to parse metadata from CSV and Excel files.
@@ -17,11 +19,53 @@ fun readCsvMetadata(
     context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { reader ->
         val headerLine = reader.readLine()
         val headers = headerLine?.split(",")?.map { it.trim() } ?: emptyList()
+
+        var detectedStartDate: LocalDate? = null
+        var detectedEndDate: LocalDate? = null
+
+        val dateColumnIndex =
+            headers.indexOfFirst {
+                it.equals(
+                    "date",
+                    ignoreCase = true
+                )
+            }
         
         // Count remaining lines for row count
         var rowCount = if (headerLine != null) 1 else 0
-        while (reader.readLine() != null) {
+        var line: String?
+
+        while (
+            reader.readLine().also {
+                line = it
+            } != null
+        ) {
+
             rowCount++
+
+            val values =
+                line!!.split(",")
+
+            if (
+                dateColumnIndex >= 0 &&
+                values.size > dateColumnIndex
+            ) {
+
+                val currentDate =
+                    LocalDate.parse(
+                        values[dateColumnIndex].trim(),
+                        DateTimeFormatter.ISO_LOCAL_DATE
+                    )
+
+                if (detectedStartDate == null) {
+
+                    detectedStartDate =
+                        currentDate
+                }
+
+                detectedEndDate =
+                    currentDate
+            }
         }
 
         return FileMetadata(
@@ -29,7 +73,11 @@ fun readCsvMetadata(
             columnCount = headers.size,
             fileType = "CSV File",
             sheetName = null,
-            headers = headers
+            headers = headers,
+            detectedStartDate =
+                detectedStartDate,
+            detectedEndDate =
+                detectedEndDate
         )
     }
 
