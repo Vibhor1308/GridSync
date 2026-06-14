@@ -8,6 +8,7 @@ import com.example.GridSync.presentation.dsm.common.validation.rules.FileNameVal
 import com.example.GridSync.presentation.dsm.common.validation.rules.RecordCountValidationRule
 import com.example.GridSync.presentation.dsm.common.validation.rules.RecordsPerDayValidationRule
 import com.example.GridSync.presentation.dsm.common.validation.rules.RequiredColumnsValidationRule
+import com.example.GridSync.presentation.dsm.common.validation.rules.TimeBlockContinuityValidationRule
 
 class Ap01Validator: DsmValidator {
 
@@ -32,7 +33,10 @@ class Ap01Validator: DsmValidator {
 
             RecordsPerDayValidationRule.validate(
                 context
-            )
+            ) ,
+
+            TimeBlockContinuityValidationRule
+                .validate(context)
 
         )
     }
