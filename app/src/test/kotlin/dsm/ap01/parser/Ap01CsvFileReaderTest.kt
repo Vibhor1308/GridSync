@@ -4,6 +4,7 @@ import com.example.GridSync.presentation.dsm.generalsellerdsm.ap01.parser.Ap01Cs
 import com.example.GridSync.presentation.dsm.generalsellerdsm.ap01.parser.Ap01FileReader
 import com.example.GridSync.presentation.dsm.generalsellerdsm.ap01.parser.Ap01ParseResult
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import java.io.File
 import kotlin.test.DefaultAsserter.fail
@@ -11,7 +12,7 @@ import kotlin.test.DefaultAsserter.fail
 class Ap01CsvFileReaderTest {
 
     @Test
-    fun shouldParseValidAp01File(){
+    fun shouldParseValidAp01File() = runTest{
 
         val reader: Ap01FileReader = Ap01CsvFileReader()
 

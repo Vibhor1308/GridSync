@@ -4,7 +4,7 @@ import java.io.File
 
 interface Ap01FileReader {
 
-    fun read(
+    suspend fun read(
         file: File
     ): Ap01ParseResult
 }

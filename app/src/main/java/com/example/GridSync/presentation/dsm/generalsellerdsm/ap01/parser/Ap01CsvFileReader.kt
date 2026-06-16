@@ -7,15 +7,17 @@ import com.example.GridSync.presentation.dsm.common.parsing.parseBigDecimal
 import com.example.GridSync.presentation.dsm.common.parsing.parseDate
 import com.example.GridSync.presentation.dsm.common.parsing.parseTime
 import com.example.GridSync.presentation.dsm.generalsellerdsm.ap01.domain.Ap01InputRecord
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
 import java.io.File
 
 class Ap01CsvFileReader : Ap01FileReader {
 
-    override fun read(
+    override suspend fun read(
         file: File
-    ): Ap01ParseResult {
+    ): Ap01ParseResult = withContext(Dispatchers.IO) {
 
         val collector = ParsingErrorCollector()
         val records = mutableListOf<Ap01InputRecord>()
@@ -47,7 +49,7 @@ class Ap01CsvFileReader : Ap01FileReader {
 
         }
 
-        return if (collector.hasErrors()) {
+        return@withContext if (collector.hasErrors()) {
             Ap01ParseResult.Failure(
                 errors = collector.errors
             )

@@ -61,4 +61,7 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:5.2.5")
     implementation("org.apache.commons:commons-csv:1.14.1")
     implementation(kotlin("test"))
+    testImplementation(
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:<matching-version>"
+    )
 }
