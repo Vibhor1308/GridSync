@@ -87,4 +87,264 @@ class PspCalculationMapperTest {
         )
     }
 
+    @Test
+    fun shouldCalculateOverInjectionChargeLevel2ForOverFrequency2() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("150"),
+            frequency = BigDecimal("50.10"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "-160",
+            actual = result.overInjectionChargeLevel2
+        )
+    }
+
+    @Test
+    fun shouldReturnZeroWhenFrequencyIsNotOverFrequency2() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("150"),
+            frequency = BigDecimal("50.00"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "0",
+            actual = result.overInjectionChargeLevel2
+        )
+    }
+
+    private fun assertBigDecimalEquals(
+        expected: String,
+        actual: BigDecimal
+    ) {
+        assertEquals(
+            0,
+            BigDecimal(expected).compareTo(actual)
+        )
+    }
+
+    @Test
+    fun shouldCalculateUnderInjectionChargeLevel1ForBandFrequency() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("90"),
+            frequency = BigDecimal("50.00"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "-400",
+            actual = result.underInjectionChargeLevel1
+        )
+    }
+
+    @Test
+    fun shouldCalculateUnderInjectionChargeLevel1ForFrequency50_04() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("90"),
+            frequency = BigDecimal("50.04"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "-370",
+            actual = result.underInjectionChargeLevel1
+        )
+    }
+
+    @Test
+    fun shouldCalculateUnderInjectionChargeLevel1ForOverFrequency1() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("90"),
+            frequency = BigDecimal("50.06"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "-340",
+            actual = result.underInjectionChargeLevel1
+        )
+    }
+
+    @Test
+    fun shouldCalculateUnderInjectionChargeLevel2ForFrequencyGreaterThanOrEqualTo50() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("50"),
+            frequency = BigDecimal("50.00"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "-1600",
+            actual = result.underInjectionChargeLevel2
+        )
+    }
+
+    @Test
+    fun shouldCalculateUnderInjectionChargeLevel2ForFrequencyBetween49_90And50() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("50"),
+            frequency = BigDecimal("49.95"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "-2400",
+            actual = result.underInjectionChargeLevel2
+        )
+    }
+
+    @Test
+    fun shouldCalculateUnderInjectionChargeLevel2ForFrequencyBelow49_90() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("50"),
+            frequency = BigDecimal("49.89"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "-3200",
+            actual = result.underInjectionChargeLevel2
+        )
+    }
+
+    @Test
+    fun shouldCalculateDrawalCharge() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal.ZERO,
+            actualGeneration = BigDecimal("-10"),
+            frequency = BigDecimal("50.00"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "-400",
+            actual = result.drawalCharge
+        )
+    }
+
+    @Test
+    fun shouldReturnZeroDrawalChargeWhenScheduleIsNotZero() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("90"),
+            frequency = BigDecimal("50.00"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "0",
+            actual = result.drawalCharge
+        )
+    }
+
 }
