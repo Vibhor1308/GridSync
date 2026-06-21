@@ -28,5 +28,9 @@ data class PspCalculationRecord(
     val drawalCharge: BigDecimal,
 
     val totalOverInjectionCharge: BigDecimal,
-    val totalUnderInjectionCharge: BigDecimal
+    val totalUnderInjectionCharge: BigDecimal,
+
+    val upto10PercentCharge: BigDecimal,
+    val beyond10PercentCharge: BigDecimal,
+    val totalDeviationCharge: BigDecimal
 )

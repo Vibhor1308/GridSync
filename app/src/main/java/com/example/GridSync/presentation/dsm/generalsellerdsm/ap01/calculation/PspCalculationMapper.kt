@@ -112,6 +112,18 @@ class PspCalculationMapper {
                 underInjectionChargeLevel2 = underInjectionChargeLevel2
             )
 
+        val upto10PercentCharge = overInjectionChargeLevel1
+                .add(underInjectionChargeLevel1)
+
+        val beyond10PercentCharge =
+            overInjectionChargeLevel2
+                .add(underInjectionChargeLevel2)
+
+        val totalDeviationCharge =
+            totalOverInjectionCharge
+                .add(totalUnderInjectionCharge)
+                .add(drawalCharge)
+
         return PspCalculationRecord(
             input = input,
 
@@ -134,8 +146,10 @@ class PspCalculationMapper {
             drawalCharge = drawalCharge,
 
             totalOverInjectionCharge = totalOverInjectionCharge,
-            totalUnderInjectionCharge = totalUnderInjectionCharge
-        )
+            totalUnderInjectionCharge = totalUnderInjectionCharge,
+            upto10PercentCharge = upto10PercentCharge,
+            beyond10PercentCharge = beyond10PercentCharge,
+            totalDeviationCharge = totalDeviationCharge)
     }
 
     private fun calculateOverInjectionChargeLevel1(

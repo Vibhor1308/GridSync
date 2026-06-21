@@ -347,4 +347,113 @@ class PspCalculationMapperTest {
         )
     }
 
+    @Test
+    fun shouldCalculateAggregatedChargesForOverInjection() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("110"),
+            frequency = BigDecimal("50.00"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "400",
+            actual = result.upto10PercentCharge
+        )
+
+        assertBigDecimalEquals(
+            expected = "0",
+            actual = result.beyond10PercentCharge
+        )
+
+        assertBigDecimalEquals(
+            expected = "400",
+            actual = result.totalDeviationCharge
+        )
+    }
+
+    @Test
+    fun shouldCalculateAggregatedChargesForUnderInjection() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal("100"),
+            actualGeneration = BigDecimal("90"),
+            frequency = BigDecimal("50.00"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        assertBigDecimalEquals(
+            expected = "-400",
+            actual = result.upto10PercentCharge
+        )
+
+        assertBigDecimalEquals(
+            expected = "0",
+            actual = result.beyond10PercentCharge
+        )
+
+        assertBigDecimalEquals(
+            expected = "-400",
+            actual = result.totalDeviationCharge
+        )
+    }
+
+    @Test
+    fun shouldCalculateAggregatedChargesForDrawal() {
+
+        val mapper = PspCalculationMapper()
+
+        val input = Ap01InputRecord(
+            timeBlock = DsmTimeBlock(
+                date = LocalDate.of(2026, 5, 25),
+                time = LocalTime.of(0, 15)
+            ),
+            scheduledGeneration = BigDecimal.ZERO,
+            actualGeneration = BigDecimal("-10"),
+            frequency = BigDecimal("50.00"),
+            rate = BigDecimal.ZERO,
+            ppaRate = BigDecimal("4")
+        )
+
+        val result = mapper.map(input)
+
+        //println("upto10PercentCharge = ${result.upto10PercentCharge}")
+       // println("beyond10PercentCharge = ${result.beyond10PercentCharge}")
+       // println("totalDeviationCharge = ${result.totalDeviationCharge}")
+
+        assertBigDecimalEquals(
+            expected = "0",
+            actual = result.upto10PercentCharge
+        )
+
+        assertBigDecimalEquals(
+            expected = "-400",
+            actual = result.beyond10PercentCharge
+        )
+
+        assertBigDecimalEquals(
+            expected = "-400",
+            actual = result.totalDeviationCharge
+        )
+    }
+
 }
