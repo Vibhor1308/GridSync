@@ -28,10 +28,12 @@ private val DATE_FORMATTERS = listOf(
 )
 
 private val TIME_FORMATTERS = listOf(
-    DateTimeFormatter.ofPattern("H:mm"),
-    DateTimeFormatter.ofPattern("HH:mm"),
     DateTimeFormatter.ofPattern("H:mm:ss"),
     DateTimeFormatter.ofPattern("HH:mm:ss"),
+    DateTimeFormatter.ofPattern("H:mm"),
+    DateTimeFormatter.ofPattern("HH:mm"),
+    DateTimeFormatter.ofPattern("h:mm:ss a", Locale.ENGLISH),
+    DateTimeFormatter.ofPattern("hh:mm:ss a", Locale.ENGLISH),
     DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH),
     DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH),
     DateTimeFormatter.ofPattern("H.mm"),

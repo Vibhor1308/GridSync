@@ -1,6 +1,7 @@
 package com.example.GridSync.presentation.dsm.validation
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,12 +39,14 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.GridSync.R
 import com.example.GridSync.presentation.dsm.common.DsmWorkflowViewModel
 import com.example.GridSync.presentation.dsm.common.validation.ValidationStatus
+import com.example.GridSync.presentation.dsm.generalsellerdsm.GeneralSellerEvent
 import com.example.GridSync.presentation.dsm.generalsellerdsm.GeneralSellerViewModel
 import com.example.GridSync.presentation.dsm.utils.readCsvMetadata
 import com.example.GridSync.presentation.dsm.utils.readExcelMetadata
 import com.example.GridSync.ui.theme.ErrorRed
 import com.example.GridSync.ui.theme.SuccessGreen
 import com.example.GridSync.ui.theme.WarningYellow
+import com.example.GridSync.utils.shareFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -56,7 +59,22 @@ fun FileValidationScreen(
 ) {
 
     val dsmWorkflowUiState by dsmWorkflowViewModel.uiState.collectAsState()
+    val generalSellerUiState by generalSellerViewModel.uiState.collectAsState()
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+
+        generalSellerViewModel.events.collect { event ->
+            when (event) {
+                is GeneralSellerEvent.ShareWorkbook -> {
+                    shareFile(context, event.outputFile)
+                }
+                is GeneralSellerEvent.ShowError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
 
     LaunchedEffect(dsmWorkflowUiState.fileMetadata) {
 
@@ -126,6 +144,8 @@ fun FileValidationScreen(
                     it.status == ValidationStatus.FAIL
                 }
 
+    val isProcessing = dsmWorkflowUiState.isProcessingFile || generalSellerUiState.isGeneratingOutput
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -152,7 +172,7 @@ fun FileValidationScreen(
             modifier = Modifier.height(dimensionResource(R.dimen.spacing_xlarge))
         )
 
-        if (dsmWorkflowUiState.isProcessingFile) {
+        if (isProcessing) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -291,7 +311,7 @@ fun FileValidationScreen(
 
         Button(
             onClick = onContinueClick,
-            enabled = !dsmWorkflowUiState.isProcessingFile && canProceed,
+            enabled = !isProcessing && canProceed,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = dimensionResource(R.dimen.padding_large)),

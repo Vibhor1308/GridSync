@@ -108,6 +108,8 @@ fun AppNavigation() {
 
         composable(AppRoutes.FILE_VALIDATION) {
 
+            val context = androidx.compose.ui.platform.LocalContext.current
+
             FileValidationScreen(
                 dsmWorkflowViewModel = dsmWorkflowViewModel,
                 generalSellerViewModel = generalSellerViewModel,
@@ -116,7 +118,21 @@ fun AppNavigation() {
                 },
 
                 onContinueClick = {
-                    // Next screen later
+
+                    val selectedFileUri =
+                        dsmWorkflowViewModel
+                            .uiState
+                            .value
+                            .selectedFileUri
+
+                    if (selectedFileUri != null) {
+
+                        generalSellerViewModel
+                            .generateAp01Output(
+                                context = context,
+                                inputFileUri = selectedFileUri
+                            )
+                    }
                 }
             )
         }

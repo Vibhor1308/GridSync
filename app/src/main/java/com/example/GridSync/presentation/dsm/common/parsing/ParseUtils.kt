@@ -4,6 +4,30 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import java.util.Locale
+
+private val DATE_FORMATTERS = listOf(
+    DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+    DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+    DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+    DateTimeFormatter.ofPattern("d-M-yyyy"),
+    DateTimeFormatter.ofPattern("dd-MMM-yyyy"),
+    DateTimeFormatter.ISO_LOCAL_DATE
+)
+
+private val TIME_FORMATTERS = listOf(
+    DateTimeFormatter.ofPattern("H:mm:ss"),
+    DateTimeFormatter.ofPattern("HH:mm:ss"),
+    DateTimeFormatter.ofPattern("H:mm"),
+    DateTimeFormatter.ofPattern("HH:mm"),
+    DateTimeFormatter.ofPattern("h:mm:ss a", Locale.ENGLISH),
+    DateTimeFormatter.ofPattern("hh:mm:ss a", Locale.ENGLISH),
+    DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH),
+    DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH),
+    DateTimeFormatter.ofPattern("H.mm"),
+    DateTimeFormatter.ISO_LOCAL_TIME
+)
 
 fun parseBigDecimal(
     value: String?,
@@ -45,9 +69,9 @@ fun parseDate(
     context: ParsingContext
 ): LocalDate? {
 
-    val sanitizedValue = value?.trim()
+    val sanitizedValue = value?.trim() ?: ""
 
-    if (sanitizedValue.isNullOrBlank()) {
+    if (sanitizedValue.isBlank()) {
         context.errorCollector.add(
             ParsingError(
                 rowNumber = context.rowNumber,
@@ -59,23 +83,24 @@ fun parseDate(
         return null
     }
 
-    return try {
-        LocalDate.parse(sanitizedValue)
-    } catch (_: Exception) {
-        context.errorCollector.add(
-            ParsingError(
-                rowNumber = context.rowNumber,
-                columnName = columnName,
-                value = value,
-                type = FileParsingErrorType.INVALID_DATE
-            )
-        )
-        null
+    for (formatter in DATE_FORMATTERS) {
+        try {
+            return LocalDate.parse(sanitizedValue, formatter)
+        } catch (_: DateTimeParseException) {
+            continue
+        }
     }
-}
 
-private val TIME_FORMATTER =
-    DateTimeFormatter.ofPattern("HH:mm:ss")
+    context.errorCollector.add(
+        ParsingError(
+            rowNumber = context.rowNumber,
+            columnName = columnName,
+            value = value,
+            type = FileParsingErrorType.INVALID_DATE
+        )
+    )
+    return null
+}
 
 fun parseTime(
     value: String?,
@@ -83,9 +108,9 @@ fun parseTime(
     context: ParsingContext
 ): LocalTime? {
 
-    val sanitizedValue = value?.trim()
+    val sanitizedValue = value?.trim() ?: ""
 
-    if (sanitizedValue.isNullOrBlank()) {
+    if (sanitizedValue.isBlank()) {
         context.errorCollector.add(
             ParsingError(
                 rowNumber = context.rowNumber,
@@ -97,20 +122,21 @@ fun parseTime(
         return null
     }
 
-    return try {
-        LocalTime.parse(
-            sanitizedValue,
-            TIME_FORMATTER
-        )
-    } catch (_: Exception) {
-        context.errorCollector.add(
-            ParsingError(
-                rowNumber = context.rowNumber,
-                columnName = columnName,
-                value = value,
-                type = FileParsingErrorType.INVALID_TIME
-            )
-        )
-        null
+    for (formatter in TIME_FORMATTERS) {
+        try {
+            return LocalTime.parse(sanitizedValue, formatter)
+        } catch (_: DateTimeParseException) {
+            continue
+        }
     }
+
+    context.errorCollector.add(
+        ParsingError(
+            rowNumber = context.rowNumber,
+            columnName = columnName,
+            value = value,
+            type = FileParsingErrorType.INVALID_TIME
+        )
+    )
+    return null
 }

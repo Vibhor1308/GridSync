@@ -6,7 +6,7 @@ object Ap01Columns {
 
     const val TIME = "time"
 
-    const val SCHEDULED_GENERATION = "sch_total"
+    const val SCHEDULED_GENERATION = "inj_sch_total"
 
     const val ACTUAL_GENERATION = "act_total"
 

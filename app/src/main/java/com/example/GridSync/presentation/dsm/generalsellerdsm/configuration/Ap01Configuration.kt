@@ -17,7 +17,7 @@ object Ap01Configuration {
         requiredColumns = setOf(
             "date",
             "time",
-            "sch_total",
+            "inj_sch_total",
             "act_total",
             "frequency",
             "rate",

@@ -12,6 +12,7 @@ import kotlinx.coroutines.withContext
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
 import java.io.File
+import java.math.BigDecimal
 
 class Ap01CsvFileReader : Ap01FileReader {
 
@@ -23,6 +24,12 @@ class Ap01CsvFileReader : Ap01FileReader {
         val records = mutableListOf<Ap01InputRecord>()
 
         file.bufferedReader().use { reader ->
+
+            // Handle UTF-8 BOM if present
+            reader.mark(1)
+            if (reader.read() != 0xFEFF) {
+                reader.reset()
+            }
 
             val csvRecords = CSVFormat.DEFAULT
                 .builder()
@@ -96,7 +103,9 @@ class Ap01CsvFileReader : Ap01FileReader {
             value = record[Ap01Columns.ACTUAL_GENERATION],
             columnName = Ap01Columns.ACTUAL_GENERATION,
             context = context
-        )
+        )?.let {
+            if (it < BigDecimal.ZERO) BigDecimal.ZERO else it
+        }
 
         val frequency = parseBigDecimal(
             value = record[Ap01Columns.FREQUENCY],
